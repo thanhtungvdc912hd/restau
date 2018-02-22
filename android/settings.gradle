@@ -1,0 +1,3 @@
+rootProject.name = 'MyRestau'
+
+include ':app'
