@@ -9,11 +9,12 @@ import {
   StatusBar,
   ScrollView
 } from 'react-native';
+import {connect} from 'react-redux'
 
-export default class Restaurant extends Component<{}> {
+class Restaurant extends Component<{}> {
   render() {
-    const {restaurant} = this.props
-    const {branches} = this.props
+    const {restaurant, branches, navigation} = this.props
+
     if (branches != null) {
         restaurant.branches = branches
     }
@@ -23,7 +24,7 @@ export default class Restaurant extends Component<{}> {
         <View style={styles.restauContainer}>
           <View style={styles.restauStyle}>
             <View style={styles.restauImage}>
-              <TouchableOpacity onPress={()=>{this.props.navigate('RestaurantDetail', {restaurant})}}>
+              <TouchableOpacity onPress={()=>{this.props.navigation.navigate('RestaurantDetail', {restaurant})}}>
                 <Image source={{uri: url}} style={styles.image}/>
               </TouchableOpacity>
             </View>
@@ -34,7 +35,7 @@ export default class Restaurant extends Component<{}> {
                   </View>
                   <View style={styles.restauInfoTool}>
                     <View>
-                      <TouchableOpacity onPress={()=>{this.props.navigate('RestaurantDetail',{restaurant})}}>
+                      <TouchableOpacity onPress={()=>{navigation.navigate('RestaurantDetail',{restaurant})}}>
                         <Image source={require("../images/info.png")} style={styles.icon}/>
                       </TouchableOpacity>
                     </View>
@@ -60,6 +61,13 @@ export default class Restaurant extends Component<{}> {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  navigation: state.navigation,
+})
+
+export default connect(mapStateToProps)(Restaurant);
+
 const restauWidth= 100
 const restauHeight= restauWidth * 640 /960
 const styles = StyleSheet.create({

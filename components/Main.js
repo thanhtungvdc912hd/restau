@@ -47,14 +47,13 @@ export default class Main extends Component<{}> {
     });
   }
   render() {
-    const { navigate } = this.props.navigation
-    const {restaurants} = this.state
-    const {promotions} = this.state
+    const {restaurants, promotions} = this.state
+
     return (
       <ScrollView style={styles.container}>
         <StatusBar hidden={true}/>
-        <Promotions navigate={navigate} promotions={promotions} restaurants={restaurants}/>
-        <TopRestaurants navigate={navigate} restaurants={restaurants}/>
+        <Promotions promotions={promotions} restaurants={restaurants}/>
+        <TopRestaurants restaurants={restaurants}/>
       </ScrollView>
     );
   }

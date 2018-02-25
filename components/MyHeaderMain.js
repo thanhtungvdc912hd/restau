@@ -31,7 +31,6 @@ export default class MyHeaderMain extends Component<{}> {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#43a047',
-    flex: 0.1,
     padding: 10,
     justifyContent: 'space-around'
   },

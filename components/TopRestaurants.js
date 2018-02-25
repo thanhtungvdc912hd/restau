@@ -13,7 +13,6 @@ import Restaurant from './Restaurant'
 export default class TopRestaurants extends Component<{}> {
   render() {
     const {restaurants} = this.props
-    const {navigate} = this.props
     if(restaurants.length == 0){
         return(
         <View><Text>Loading...</Text></View>
@@ -27,7 +26,7 @@ export default class TopRestaurants extends Component<{}> {
           <FlatList
             data={restaurants}
             renderItem={({item}) => (
-              <Restaurant navigate={navigate} restaurant={item} key={item.id}/>
+              <Restaurant restaurant={item} key={item.id}/>
             )}
             keyExtractor={(item, index) => index.toString()}
           />
