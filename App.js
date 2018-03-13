@@ -1,20 +1,27 @@
-import React, { Component } from 'react';
-import AppWithNavigationState from "./components/navigators/AppNavigator"
-import { createStore, applyMiddleware } from 'redux'
-import { Provider } from 'react-redux'
-import logger from 'redux-logger'
-import store from './components/reducers/store'
-import AppReducer from './components/reducers'
-import TestReduxAPI from './components/TestReduxAPI'
+import React from 'react';
+import { AppRegistry } from 'react-native';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
 
-//const store = createStore(AppReducer, applyMiddleware(logger))
+import AppReducer from './src/reducers';
+import AppWithNavigationState from './src/navigators/AppNavigator';
+import { middleware } from './src/utils/redux';
+import thunk from 'redux-thunk'
+const store = createStore(
+  AppReducer,
+  applyMiddleware(middleware, thunk),
+);
 
-export default class App extends Component<{}> {
+class MyRestauApp extends React.Component {
   render() {
     return (
       <Provider store={store}>
-        <TestReduxAPI />
+        <AppWithNavigationState />
       </Provider>
     );
   }
 }
+
+AppRegistry.registerComponent('MyRestau', () => MyRestauApp);
+
+export default MyRestauApp;
