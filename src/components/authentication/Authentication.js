@@ -7,8 +7,8 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import MyHeader from "./MyHeader"
-
+import MyHeader from "../header/MyHeader"
+import register from "../../utils/register"
 export default class Authentication extends Component<{}> {
   constructor(props) {
     super(props)
@@ -17,6 +17,10 @@ export default class Authentication extends Component<{}> {
     }
   }
 
+  componentDidMount() {
+    register("tung@gmail.com","Tung000", "123")
+    .then(res => console.log(res))
+  }
   signInClick = () => {
     this.setState({isLoggedIn: false})
   }
@@ -26,15 +30,13 @@ export default class Authentication extends Component<{}> {
   }
 
   static navigationOptions = ({navigation}) => ({
-    header: null,//<MyHeader navigation = {navigation}/>,
-})
+  })
 
   render() {
     const { navigate } = this.props.navigation
     const { goBack } = this.props.navigation
     const signInJSX = (
       <View>
-        <TextInput
         <TextInput style={styles.input} placeholder='Enter your email'/>
         <TextInput style={styles.input} placeholder='Enter your password'/>
         <TouchableOpacity onPress={()=>{navigate()}}
@@ -89,9 +91,10 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#43a047',
     flex: 1,
-    padding: 10,
+    paddingTop: 30,
+    paddingBottom: 30,
     justifyContent: 'space-between',
-
+    paddingHorizontal: 10
   },
   headerText: {
     flexDirection: 'row',
@@ -102,7 +105,8 @@ const styles = StyleSheet.create({
   headerTitle: {
     color: '#fff',
     fontFamily: 'Avenir',
-    fontSize: 20
+    fontWeight: 'bold',
+    fontSize: 17
   },
   icon: {
     width: 24,

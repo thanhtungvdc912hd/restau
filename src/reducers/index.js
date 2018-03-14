@@ -1,6 +1,8 @@
 import { combineReducers } from 'redux';
 import { NavigationActions } from 'react-navigation';
 import { AppNavigator } from '../navigators/AppNavigator';
+import saveCart from '../utils/saveCart'
+import getCart from '../utils/getCart'
 import {INCREASE, DECREASE, HOME,BRANCHES, RESTAURANT_DETAIL,
   FETCH_KO,
   FETCH_OK,
@@ -82,21 +84,29 @@ function cart(state = initialStateCart, action) {
 
   switch (action.type) {
     case ADD_CART_FOODS:
+    const myFoodsAdd = [...state.foods, action.payload]
+    saveCart(myFoodsAdd)
       return {
         ...state,
-        foods: [...state.foods, action.payload]
+        foods: myFoodsAdd
       }
     case UPDATE_CART:
+    const myFoodsUpdate = state.foods.map(item => item.food.id === action.payload.food.id ? action.payload : item)
+    saveCart(myFoodsUpdate)
       return {
         ...state,
-        foods: state.foods.map(item => item.food.id === action.payload.food.id ? action.payload : item)
+        foods: myFoodsUpdate
       }
     case DELETE_FROM_CART:
+    const myFoods = state.foods.filter(item => item.food.id !== action.payload.food.id)
+    saveCart(myFoods)
       return {
         ...state,
-        foods: state.foods.filter(item => item.food.id !== action.payload.food.id)
+        foods: myFoods
       }
     default:
+      getCart()
+      .then(cart => state.foods = cart)
       return state
   }
 }

@@ -70,7 +70,7 @@ class Food extends Component<{}> {
             <TouchableOpacity onPress={() => {this.deleteFood(food)}}>
               <Image source={require("../../images/minus.png")} style={styles.icon}/>
             </TouchableOpacity>
-        
+
 
         </View>
       )

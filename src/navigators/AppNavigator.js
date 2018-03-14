@@ -3,7 +3,14 @@ import { connect } from 'react-redux';
 import { addNavigationHelpers, StackNavigator, TabNavigator, DrawerNavigator } from 'react-navigation';
 import { addListener } from '../utils/redux';
 import { BackHandler } from 'react-native';
-
+import {
+  ScrollView,
+  View,
+  Text,
+  Button,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import Main from '../components/home/Main'
 import MyInfo from '../components/myinfo/MyInfo'
 import RestaurantDetail from '../components/detail/RestaurantDetail'
@@ -14,6 +21,8 @@ import Foods from '../components/food/Foods'
 import Food from '../components/food/Food'
 import HeaderRight from '../components/header/HeaderRight'
 import Orders from '../components/order/Orders'
+import SlideMenu from '../components/slideMenu/SlideMenu'
+import Authentication from '../components/authentication/Authentication'
 
 
 const stackNavigatorConfiguration = {
@@ -21,11 +30,11 @@ const stackNavigatorConfiguration = {
   navigationOptions : {
     headerStyle: {
       backgroundColor: '#43a047',
-      //borderBottomWidth:0
     },
     headerTintColor: '#fff',
     headerTitleStyle: {
       fontWeight: 'bold',
+      fontFamily: 'Avenir',
     },
   }
 };
@@ -43,9 +52,14 @@ export const HomePage = StackNavigator({
 export const AppNavigator = DrawerNavigator({
   Home: { screen: HomePage },
   Info: { screen: MyInfo },
+  Authentication: { screen: Authentication },
   //Language: { screen: MyInfo },
   //Info: { screen: MyInfo },
   //Logout: { screen: MyInfo },
+},{
+  // define customComponent here
+  contentComponent: SlideMenu,
+  headerMode: 'float'
 });
 
 

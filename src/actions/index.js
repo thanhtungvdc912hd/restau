@@ -45,14 +45,10 @@ export const startFetch = () => ({type:START_FETCH})
 export const fetchOK = (dataSource) => ({type:FETCH_OK, dataSource})
 export const fetchRestaurant = (dataSource) => ({type:FETCH_RESTAURANT, dataSource})
 export const fetchKO = () => ({type:FETCH_KO})
-export const fetchThunk = (restaurantId) => {
+export const saveCartThunk = (food, quantity) => {
   return dispatch => {
-    dispatch(startFetch())
-    getRestaurantDetail(restaurantId)
-    .then(restaurant => {
-      dispatch(fetchOK(restaurant))
-    })
-    .catch(err => console.log(err))
+    dispatch(addFoodToCart(food, quantity))
+    
   }
 }
 

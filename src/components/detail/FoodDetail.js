@@ -10,6 +10,8 @@ import {
 import {connect} from 'react-redux'
 import * as actions from '../../actions'
 import HeaderRight from '../header/HeaderRight'
+
+
 class FoodDetail extends Component<{}> {
   static navigationOptions = ({navigation}) => {
     return {
@@ -20,7 +22,7 @@ class FoodDetail extends Component<{}> {
   addFoodToCart(food) {
     let my_index = this.props.cartFoods.findIndex(f => f.food.id === food.id)
     if (my_index < 0) {
-      this.props.addFoodToCart(food, 1)
+      this.props.saveCartThunk(food, 1)
     }
   }
 
