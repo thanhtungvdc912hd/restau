@@ -3,30 +3,26 @@ import {
   StyleSheet,
   View,
   Text,
-  TextInput,
   Image,
   TouchableOpacity,
 } from 'react-native';
-import MyHeader from "../header/MyHeader"
-import register from "../../utils/register"
+import Signin from "./Signin"
+import Signup from "./Signup"
+
 export default class Authentication extends Component<{}> {
   constructor(props) {
     super(props)
     this.state = {
-      isLoggedIn : false
+      isSignin : true
     }
   }
 
-  componentDidMount() {
-    register("tung@gmail.com","Tung000", "123")
-    .then(res => console.log(res))
-  }
   signInClick = () => {
-    this.setState({isLoggedIn: false})
+    this.setState({isSignin: true})
   }
 
   signUpClick = () => {
-    this.setState({isLoggedIn: true})
+    this.setState({isSignin: false})
   }
 
   static navigationOptions = ({navigation}) => ({
@@ -35,30 +31,9 @@ export default class Authentication extends Component<{}> {
   render() {
     const { navigate } = this.props.navigation
     const { goBack } = this.props.navigation
-    const signInJSX = (
-      <View>
-        <TextInput style={styles.input} placeholder='Enter your email'/>
-        <TextInput style={styles.input} placeholder='Enter your password'/>
-        <TouchableOpacity onPress={()=>{navigate()}}
-        style={styles.signInNow}>
-          <Text style={styles.headerTitle}>Sign In Now</Text>
-        </TouchableOpacity>
-      </View>
-    )
-    const signUpJSX = (
-      <View>
-        <TextInput style={styles.input} placeholder='Enter your name'/>
-        <TextInput style={styles.input} placeholder='Enter your email'/>
-        <TextInput style={styles.input} placeholder='Enter your password'/>
-        <TextInput style={styles.input} placeholder='Re-enter your password'/>
-        <TouchableOpacity onPress={()=>{this.props.navigation.navigate('Main')}}
-        style={styles.signInNow}>
-          <Text style={styles.headerTitle}>Sign Up Now</Text>
-        </TouchableOpacity>
-      </View>
-    )
-    const {isLoggedIn} = this.state
-    const mainJSX = isLoggedIn ? signUpJSX : signInJSX
+
+    const {isSignin} = this.state
+    const mainJSX = isSignin ? <Signin/> : <Signup/>
 
     return (
       <View style={styles.container}>
@@ -73,11 +48,11 @@ export default class Authentication extends Component<{}> {
         <View style={styles.controller}>
           <TouchableOpacity onPress={this.signInClick}
           style={styles.signIn}>
-            <Text style={!isLoggedIn ? styles.active : styles.inactive}>SIGN IN</Text>
+            <Text style={isSignin ? styles.active : styles.inactive}>SIGN IN</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.signUpClick}
           style={styles.signUp}>
-            <Text style={isLoggedIn ? styles.active : styles.inactive}>SIGN UP</Text>
+            <Text style={!isSignin ? styles.active : styles.inactive}>SIGN UP</Text>
           </TouchableOpacity>
         </View>
 
