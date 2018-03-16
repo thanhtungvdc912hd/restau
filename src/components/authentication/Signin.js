@@ -5,22 +5,60 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  AsyncStorage
 } from 'react-native';
+import {connect} from 'react-redux'
+import * as actions from '../../actions'
+class Signin extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      email: '',
+      password: ''
+    }
+  }
 
-export default class Signin extends Component<{}> {
+  _signInAsync = async () => {
+      await AsyncStorage.setItem('userToken', 'abc');
+      this.props.navigation.navigate('Home');
+    };
+
+    _signOutAsync = async () => {
+        await AsyncStorage.clear();
+        this.props.navigation.navigate('Auth');
+      };
+
+  onSignIn() {
+    const {email, password} = this.state
+    this.props.loginMyRestau(email, password)
+  }
   render() {
     return (
         <View>
-          <TextInput style={styles.input} placeholder='Enter your email'/>
-          <TextInput style={styles.input} placeholder='Enter your password'/>
+          <TextInput style={styles.input}
+            value={this.state.email}
+            onChangeText={email => this.setState({email})}
+            placeholder='Enter your email'/>
+          <TextInput style={styles.input}
+            value={this.state.password}
+            onChangeText={password => this.setState({password})}
+            secureTextEntry
+            placeholder='Enter your password'/>
           <TouchableOpacity
-          style={styles.signInNow}>
+            onPress={this.onSignIn.bind(this)}
+            style={styles.signInNow}>
             <Text style={styles.headerTitle}>Sign In Now</Text>
           </TouchableOpacity>
         </View>
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+  isLogged: state.auth.isLogged,
+}}
+export default connect(mapStateToProps, actions)(Signin)
 
 const styles = StyleSheet.create({
   headerTitle: {

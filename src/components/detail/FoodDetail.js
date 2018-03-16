@@ -44,7 +44,7 @@ class FoodDetail extends Component<{}> {
                 <Image source={require("../../images/point.png")} style={styles.icon}/>
               </View>
               <TouchableOpacity onPress={() => {this.addFoodToCart(food)}}>
-                <Image source={require("../../images/cart.png")} style={styles.icon}/>
+                <Image source={require("../../images/addFood.png")} style={styles.icon}/>
               </TouchableOpacity>
             </View>
             <View style={styles.time}>

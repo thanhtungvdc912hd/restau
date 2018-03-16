@@ -13,7 +13,9 @@ import {INCREASE, DECREASE, HOME,BRANCHES, RESTAURANT_DETAIL,
   FOOD_DETAIL,
   ADD_CART_FOODS,
   UPDATE_CART,
-  DELETE_FROM_CART
+  DELETE_FROM_CART,
+  LOGIN_OK,
+  GO_BACK,
 } from '../actions/type';
 // Start with two routes: The Main screen, with the Login screen on top.
 //const firstAction = AppNavigator.router.getActionForPathAndParams('MyMain');
@@ -29,9 +31,9 @@ const initialState = AppNavigator.router.getStateForAction(
 function nav(state = initialState, action) {
   let nextState
   switch (action.type) {
-    case 'GO_BACK':
+    case GO_BACK:
         nextState = AppNavigator.router.getStateForAction(
-          NavigationActions.goBack(),
+          NavigationActions.navigate({routeName: 'Main'}),
           state
         );
         break;
@@ -149,10 +151,42 @@ function api(state = initialStateDatabase, action) {
   }
 }
 
+const initialStateAuth = {
+  user: null,
+  token: null,
+  isLogged: false
+}
+
+function auth(state = initialStateAuth, action) {
+  switch (action.type) {
+    case LOGIN_OK:
+        return {
+          ...state,
+          isLogged: true,
+          user: action.token.user,
+          token: action.token.token
+        }
+    case FETCH_RESTAURANT:
+        return {
+          ...state,
+          isLoading: false,
+          myRestauBranch: action.dataSource
+        }
+    case FETCH_KO:
+        return {
+          ...state,
+          error: true
+        }
+    default:
+      return state
+  }
+}
+
 const AppReducer = combineReducers({
   nav,
   cart,
-  api
+  api,
+  auth
 });
 
 export default AppReducer;

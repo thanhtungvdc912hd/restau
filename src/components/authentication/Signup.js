@@ -6,6 +6,7 @@ import {
   TextInput,
   Image,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import register from "../../utils/register"
 export default class Signup extends Component<{}> {
@@ -23,8 +24,31 @@ export default class Signup extends Component<{}> {
     const {name, email, password} = this.state
     register(email, name, password)
     .then(res => {
-      console.log(res)
+      if (res === 'THANH_CONG') return this.onSuccess()
+      this.onFail()
     })
+  }
+
+  onSuccess() {
+    Alert.alert(
+      'Notice',
+      'Sign up successfully',
+      [
+        {text: "OK", onPress: () => this.props.gotoSignIn()}
+      ],
+      {cancelable: false}
+    )
+  }
+
+  onFail() {
+    Alert.alert(
+      'Notice',
+      'Email has been used.',
+      [
+        {text: "OK", onPress: () => this.setState({email: ''})}
+      ],
+      {cancelable: false}
+    )
   }
   render() {
     return (

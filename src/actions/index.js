@@ -8,11 +8,14 @@ import {INCREASE, DECREASE, HOME, BRANCHES,
   FOODS,
   ADD_CART_FOODS,
   UPDATE_CART,
-  DELETE_FROM_CART
+  DELETE_FROM_CART,
+  LOGIN_OK,
+  GO_BACK,
 } from './type';
 import getRestaurantDetail from '../utils/getRestaurantDetail'
 import getRestaurants from '../utils/getRestaurants'
 import getTopRestaurants from '../utils/getTopRestaurants'
+import login from '../utils/login'
 
 export const counterIncrease = () => ({type:INCREASE})
 export const counterDecrease = () => ({type:DECREASE})
@@ -43,12 +46,25 @@ export const deleteFromCart = (food) => ({
   })
 export const startFetch = () => ({type:START_FETCH})
 export const fetchOK = (dataSource) => ({type:FETCH_OK, dataSource})
+export const loginOK = (token) => ({type:LOGIN_OK, token})
 export const fetchRestaurant = (dataSource) => ({type:FETCH_RESTAURANT, dataSource})
 export const fetchKO = () => ({type:FETCH_KO})
+export const goBack = () => ({type:GO_BACK})
 export const saveCartThunk = (food, quantity) => {
   return dispatch => {
     dispatch(addFoodToCart(food, quantity))
-    
+
+  }
+}
+
+export const loginMyRestau = (email, password) => {
+  return dispatch => {
+    login(email, password)
+    .then(res => {
+      dispatch(loginOK(res))
+      dispatch(goBack())
+    })
+    .catch(err => console.log(err))
   }
 }
 

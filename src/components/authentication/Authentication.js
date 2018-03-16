@@ -33,7 +33,7 @@ export default class Authentication extends Component<{}> {
     const { goBack } = this.props.navigation
 
     const {isSignin} = this.state
-    const mainJSX = isSignin ? <Signin/> : <Signup/>
+    const mainJSX = isSignin ? <Signin/> : <Signup gotoSignIn={this.signInClick.bind(this)}/>
 
     return (
       <View style={styles.container}>

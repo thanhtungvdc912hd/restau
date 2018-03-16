@@ -8,18 +8,15 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types'
 import {NavigationActions} from 'react-navigation'
-export default class SlideMenu extends Component<{}> {
-  constructor(props) {
-    super(props)
-    this.state = {
-      isLoggedIn : false
-    }
-  }
+import {connect} from 'react-redux'
+import * as actions from '../../actions'
 
+class SlideMenu extends Component<{}> {
   render() {
     const { navigate } = this.props.navigation
-
-    const logInJSX = (
+    const {user} = this.props
+    const nameUser = user ? user.name : ""
+    const logOutJSX = (
       <View>
         <TouchableOpacity style={styles.btnStyle}
         onPress={() => navigate('Authentication')}>
@@ -28,9 +25,9 @@ export default class SlideMenu extends Component<{}> {
       </View>
     )
 
-    const logOutJSX = (
+    const logInJSX = (
       <View style={styles.logInContainter}>
-        <Text style={styles.username}>Dao Thanh Tung</Text>
+        <Text style={styles.username}>{nameUser}</Text>
         <View style={styles.logInController}>
           <TouchableOpacity style={styles.btnStyleSignIn}
             onPress={() => navigate('Home')}>
@@ -47,7 +44,7 @@ export default class SlideMenu extends Component<{}> {
       </View>
     )
 
-    const myMenu = this.state.isLoggedIn ? logOutJSX : logInJSX
+    const myMenu = this.props.isLogged ? logInJSX : logOutJSX
     return (
       <View style={styles.container}>
       <Image
@@ -60,9 +57,14 @@ export default class SlideMenu extends Component<{}> {
   }
 }
 
-SlideMenu.propTypes = {
-  navigation: PropTypes.object
-};
+const mapStateToProps = (state) => {
+  return {
+  isLogged: state.auth.isLogged,
+  user: state.auth.user,
+  token: state.auth.token
+}}
+export default connect(mapStateToProps, actions)(SlideMenu)
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
