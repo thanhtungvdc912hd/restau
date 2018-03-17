@@ -10,12 +10,16 @@ import {INCREASE, DECREASE, HOME, BRANCHES,
   UPDATE_CART,
   DELETE_FROM_CART,
   LOGIN_OK,
+  LOGOUT,
   GO_BACK,
 } from './type';
 import getRestaurantDetail from '../utils/getRestaurantDetail'
 import getRestaurants from '../utils/getRestaurants'
 import getTopRestaurants from '../utils/getTopRestaurants'
 import login from '../utils/login'
+import checkLogin from '../utils/checkLogin'
+import getToken from '../utils/getToken'
+import saveToken from '../utils/saveToken'
 
 export const counterIncrease = () => ({type:INCREASE})
 export const counterDecrease = () => ({type:DECREASE})
@@ -46,7 +50,10 @@ export const deleteFromCart = (food) => ({
   })
 export const startFetch = () => ({type:START_FETCH})
 export const fetchOK = (dataSource) => ({type:FETCH_OK, dataSource})
-export const loginOK = (token) => ({type:LOGIN_OK, token})
+export const loginOK = (token) => {
+  return {type:LOGIN_OK, token}
+}
+export const logout = () => ({type:LOGOUT})
 export const fetchRestaurant = (dataSource) => ({type:FETCH_RESTAURANT, dataSource})
 export const fetchKO = () => ({type:FETCH_KO})
 export const goBack = () => ({type:GO_BACK})
@@ -57,12 +64,31 @@ export const saveCartThunk = (food, quantity) => {
   }
 }
 
+export const logoutMyRestau = () => {
+  return dispatch => {
+    saveToken('')
+    dispatch(logout())
+  }
+}
+
 export const loginMyRestau = (email, password) => {
   return dispatch => {
     login(email, password)
     .then(res => {
       dispatch(loginOK(res))
+      saveToken(res.token)
       dispatch(goBack())
+    })
+    .catch(err => console.log(err))
+  }
+}
+
+export const checkLoginMyRestau = () => {
+  return dispatch => {
+    getToken()
+    .then(res => {
+      checkLogin(res)
+      .then(res => dispatch(loginOK(res)))
     })
     .catch(err => console.log(err))
   }

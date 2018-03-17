@@ -18,16 +18,6 @@ class Signin extends Component {
     }
   }
 
-  _signInAsync = async () => {
-      await AsyncStorage.setItem('userToken', 'abc');
-      this.props.navigation.navigate('Home');
-    };
-
-    _signOutAsync = async () => {
-        await AsyncStorage.clear();
-        this.props.navigation.navigate('Auth');
-      };
-
   onSignIn() {
     const {email, password} = this.state
     this.props.loginMyRestau(email, password)

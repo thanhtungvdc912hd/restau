@@ -16,11 +16,6 @@ import {connect} from 'react-redux'
 import * as actions from '../../actions'
 
 class Main extends Component<{}> {
-  // state = {
-  //   topRestaurants: [],
-  //   topPromotions: [],
-  // }
-
   static navigationOptions = ({navigation}) => ({
     title: 'My Restaurant',
     drawerLabel: 'Home',
@@ -43,6 +38,10 @@ class Main extends Component<{}> {
 
   componentDidMount() {
     this.getRestaurants()
+
+    if (!this.props.isLogged) {
+      this.props.checkLoginMyRestau()
+    }
   }
 
   render() {
@@ -71,6 +70,7 @@ const mapStateToProps = (state) => {
   isLoading: state.api.isLoading,
   restaurants: state.api.restaurants,
   topPromotions: state.api.topPromotions,
+  isLogged: state.auth.isLogged
 }}
 export default connect(mapStateToProps, actions)(Main)
 

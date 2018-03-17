@@ -3,6 +3,9 @@ import { NavigationActions } from 'react-navigation';
 import { AppNavigator } from '../navigators/AppNavigator';
 import saveCart from '../utils/saveCart'
 import getCart from '../utils/getCart'
+import saveToken from '../utils/saveToken'
+import getToken from '../utils/getToken'
+import checkLogin from '../utils/checkLogin'
 import {INCREASE, DECREASE, HOME,BRANCHES, RESTAURANT_DETAIL,
   FETCH_KO,
   FETCH_OK,
@@ -15,6 +18,7 @@ import {INCREASE, DECREASE, HOME,BRANCHES, RESTAURANT_DETAIL,
   UPDATE_CART,
   DELETE_FROM_CART,
   LOGIN_OK,
+  LOGOUT,
   GO_BACK,
 } from '../actions/type';
 // Start with two routes: The Main screen, with the Login screen on top.
@@ -162,20 +166,16 @@ function auth(state = initialStateAuth, action) {
     case LOGIN_OK:
         return {
           ...state,
-          isLogged: true,
-          user: action.token.user,
-          token: action.token.token
+          isLogged: action.token ? true : false,
+          user: action.token ? action.token.user : null,
+          token: action.token ? action.token.token : null
         }
-    case FETCH_RESTAURANT:
+    case LOGOUT:
         return {
           ...state,
-          isLoading: false,
-          myRestauBranch: action.dataSource
-        }
-    case FETCH_KO:
-        return {
-          ...state,
-          error: true
+          user: null,
+          token: null,
+          isLogged: false,
         }
     default:
       return state

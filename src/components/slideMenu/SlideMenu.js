@@ -12,6 +12,9 @@ import {connect} from 'react-redux'
 import * as actions from '../../actions'
 
 class SlideMenu extends Component<{}> {
+  onLogout() {
+    this.props.logoutMyRestau()
+  }
   render() {
     const { navigate } = this.props.navigation
     const {user} = this.props
@@ -37,7 +40,9 @@ class SlideMenu extends Component<{}> {
             onPress={() => navigate('Info',{username: 'Tung'})}>
             <Text style={styles.btnText}>Your Info</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.btnStyleSignIn}>
+          <TouchableOpacity
+            onPress={this.onLogout.bind(this)}
+            style={styles.btnStyleSignIn}>
             <Text style={styles.btnText}>Sign out</Text>
           </TouchableOpacity>
         </View>
