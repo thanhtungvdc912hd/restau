@@ -11,23 +11,15 @@ import {
 import OrderHistory from './OrderHistory'
 export default class OrderHistories extends Component<{}> {
   static navigationOptions = ({navigation}) => ({
-    header: null
+    title: "Order History"
 
   })
 
   render() {
-    const {goBack} = this.props.navigation
     const {navigate} = this.props.navigation
 
     return (
       <View style={styles.container}>
-        <View style={styles.headerText}>
-          <TouchableOpacity onPress={()=> goBack()}>
-            <Image source={require("../../images/home_r.png")} style={styles.icon}/>
-          </TouchableOpacity>
-          <Text style={styles.headerTitle}>Order History</Text>
-          <Image source={require("../../images/logo.png")} style={styles.icon}/>
-        </View>
         <ScrollView>
         <OrderHistory navigate={navigate}/>
         <OrderHistory navigate={navigate}/>

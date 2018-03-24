@@ -6,7 +6,7 @@ import {
   Button,
   Image,
   TouchableOpacity,
-  StatusBar,
+  Animated,
   FlatList
 } from 'react-native';
 
@@ -16,6 +16,25 @@ import {connect} from 'react-redux'
 import * as actions from '../../actions'
 
 class Search extends Component<{}> {
+  constructor () {
+    super()
+    this.springValue = new Animated.Value(0.3)
+  }
+
+  spring () {
+    this.springValue.setValue(0.3)
+    Animated.spring(
+      this.springValue,
+      {
+        toValue: 1,
+        friction: 1
+      }
+    ).start()
+  }
+
+  componentDidMount() {
+    this.spring()
+  }
   static navigationOptions = ({navigation}) => {
     return {
     title: 'Search Restaurant',
@@ -31,7 +50,7 @@ class Search extends Component<{}> {
     const {searchResult} = this.props
     const dataSource = searchResult ? searchResult : []
     return (
-      <View style={styles.container}>
+      <Animated.View style={styles.container}>
         <FlatList
           data={dataSource}
           renderItem={({item}) => (
@@ -39,7 +58,7 @@ class Search extends Component<{}> {
           )}
           keyExtractor={(item, index) => index.toString()}
         />
-      </View>
+      </Animated.View>
     );
   }
 }
@@ -56,7 +75,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#43a047',
     flex: 1,
     justifyContent: 'space-between',
-    padding: 2
+    padding: 2,
+
   },
   icon: {
     width: 15,

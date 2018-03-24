@@ -33,7 +33,7 @@ class SlideMenu extends Component<{}> {
         <Text style={styles.username}>{nameUser}</Text>
         <View style={styles.logInController}>
           <TouchableOpacity style={styles.btnStyleSignIn}
-            onPress={() => navigate('Home')}>
+            onPress={() => navigate('OrderHistories')}>
             <Text style={styles.btnText}>Order History</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.btnStyleSignIn}

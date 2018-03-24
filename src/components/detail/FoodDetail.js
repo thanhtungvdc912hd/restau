@@ -16,12 +16,12 @@ class FoodDetail extends Component<{}> {
   static navigationOptions = ({navigation}) => {
     return {
     title: navigation.state.params.food.name,
-    headerRight: <HeaderRight/>
+    headerRight: <HeaderRight/>,
   }}
 
   addFoodToCart(food) {
-    let my_index = this.props.cartFoods.findIndex(f => f.food.id === food.id)
-    if (my_index < 0) {
+    let isExist = this.props.cartFoods.some(f => f.food.id === food.id)
+    if (!isExist) {
       this.props.saveCartThunk(food, 1)
     }
   }

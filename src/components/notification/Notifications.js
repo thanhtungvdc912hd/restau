@@ -6,8 +6,7 @@ import {
   Button,
   Image,
   TouchableOpacity,
-  StatusBar,
-  ScrollView
+  StatusBar
 } from 'react-native';
 
 export default class Notifications extends Component<{}> {

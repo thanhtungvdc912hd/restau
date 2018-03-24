@@ -6,8 +6,7 @@ import {
   Button,
   Image,
   TouchableOpacity,
-  StatusBar,
-  ScrollView
+  StatusBar
 } from 'react-native';
 
 import PropTypes from 'prop-types'
@@ -59,9 +58,6 @@ class Restaurant extends Component<{}> {
                     </View>
                     <View>
                       <Image source={require("../../images/reserve.png")} style={styles.icon}/>
-                    </View>
-                    <View>
-                      <Image source={require("../../images/order.png")} style={styles.icon}/>
                     </View>
                   </View>
               </View>

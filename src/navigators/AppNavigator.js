@@ -4,11 +4,6 @@ import { addNavigationHelpers, StackNavigator, TabNavigator, DrawerNavigator } f
 import { addListener } from '../utils/redux';
 import { BackHandler } from 'react-native';
 import {
-  ScrollView,
-  View,
-  Text,
-  Button,
-  Image,
   StyleSheet,
 } from 'react-native';
 import Main from '../components/home/Main'
@@ -24,6 +19,7 @@ import Orders from '../components/order/Orders'
 import SlideMenu from '../components/slideMenu/SlideMenu'
 import Authentication from '../components/authentication/Authentication'
 import Search from '../components/search/Search'
+import OrderHistories from '../components/order/OrderHistories'
 
 
 const stackNavigatorConfiguration = {
@@ -52,6 +48,7 @@ export const HomePage = StackNavigator({
   Orders: { screen: Orders },
   Search: { screen: Search },
   Info: { screen: MyInfo },
+  OrderHistories: { screen: OrderHistories },
 },stackNavigatorConfiguration)
 
 export const AppNavigator = DrawerNavigator({

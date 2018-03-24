@@ -23,14 +23,6 @@ class MyInfo extends Component<{}> {
   }
   static navigationOptions = ({ navigation }) => ({
     title: 'My Info',
-    header: null,
-    tabBarVisible: false,
-    drawerIcon: ({ tintColor }) => (
-      <Image
-        source={require('../../images/profile_o.png')}
-        style={[styles.icon, {tintColor: tintColor}]}
-      />
-    ),
   });
 
   changeInfo = () => {
@@ -64,13 +56,6 @@ class MyInfo extends Component<{}> {
     const {user} = this.props
     return (
       <View style={styles.container}>
-        <View style={styles.headerText}>
-          <TouchableOpacity onPress={this.goHome}>
-            <Image source={require("../../images/home_r.png")} style={styles.icon}/>
-          </TouchableOpacity>
-          <Text style={styles.headerTitle}>My Restaurant</Text>
-          <Image source={require("../../images/logo.png")} style={styles.icon}/>
-        </View>
         <View style={styles.containerProfileImage}>
           <Image
             source={require('../../images/profile_o.png')}
@@ -148,7 +133,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#43a047',
     flex: 1,
-    paddingTop: 30,
   },
   image: {
     marginTop: 20,

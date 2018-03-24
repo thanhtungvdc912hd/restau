@@ -11,32 +11,10 @@ import {
 } from 'react-native';
 
 export default class OrderHistory extends Component<{}> {
-  static navigationOptions = ({navigation}) => ({
-    tabBarIcon: ({ tintColor }) => (
-      <Image
-        source={require('../../images/home_r.png')}
-        style={[styles.icon,{tintColor: tintColor}]}
-      />
-    ),
-    drawerLabel: 'OrderHistory',
-    drawerIcon: ({ tintColor }) => (
-      <Image
-        source={require('../../images/home_r.png')}
-        style={[styles.icon, {tintColor: tintColor}]}
-      />
-    ),
-
-
-  })
   render() {
     return (
         <View style={styles.restauContainer}>
           <View style={styles.restauStyle}>
-            <View style={styles.restauImage}>
-              <TouchableOpacity onPress={()=>{this.props.navigate('RestaurantDetail')}}>
-                <Image source={require("../../images/r2.jpg")} style={styles.image}/>
-              </TouchableOpacity>
-            </View>
             <View style={styles.restauInfo}>
               <View style={styles.restauInfoTool}>
                   <View style={{justifyContent: 'center'}}>
@@ -51,23 +29,29 @@ export default class OrderHistory extends Component<{}> {
                     <View>
                       <Image source={require("../../images/reserve.png")} style={styles.icon}/>
                     </View>
-                    <View>
-                      <Image source={require("../../images/order.png")} style={styles.icon}/>
-                    </View>
                   </View>
               </View>
 
               <Text  style={styles.txtAddress}>376/42 Nguyen Dinh Chieu, Phuong 4, Quan 3, TP Ho Chi Minh</Text>
-              <View style={{flexDirection: 'row'}}>
-                <Image source={require("../../images/time.png")} style={styles.icon}/>
-                <View style={{justifyContent: 'center', paddingLeft:10 }}>
-                  <Text style={{fontSize: 10, paddingRight: 20}}>01-01-2018 15:30</Text>
+              <View style={{flexDirection: 'row', justifyContent:'space-around'}}>
+                <View style={{flexDirection: 'row', justifyContent:'space-around'}}>
+                  <Image source={require("../../images/time.png")} style={styles.icon}/>
+                  <View style={{justifyContent: 'center', paddingLeft:5 }}>
+                    <Text style={{fontSize: 10}}>01-01-2018 15:30</Text>
+                  </View>
+                </View>
+                <View style={{flexDirection: 'row', justifyContent:'space-around'}}>
+                  <Image source={require("../../images/orderStatus.png")} style={styles.icon}/>
+                  <View style={{justifyContent: 'center', paddingLeft:10 }}>
+                    <Text style={{fontSize: 10}}>Completed</Text>
+                  </View>
                 </View>
 
-
-                <Image source={require("../../images/price.png")} style={styles.icon}/>
-                <View style={{justifyContent: 'center', paddingLeft:10 }}>
-                  <Text style={{fontSize: 10}}>9.000.000 VND</Text>
+                <View style={{flexDirection: 'row', justifyContent:'space-around'}}>
+                  <Image source={require("../../images/price.png")} style={styles.icon}/>
+                  <View style={{justifyContent: 'center', paddingLeft:10 }}>
+                    <Text style={{fontSize: 10}}>9.000.000 VND</Text>
+                  </View>
                 </View>
               </View>
 
