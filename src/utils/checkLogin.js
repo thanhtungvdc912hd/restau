@@ -1,7 +1,6 @@
 const URL = 'http://192.168.64.2/myrestau/check_login.php'
 
 function checkLogin(token) {
-  console.log(token);
   return fetch(URL,{
     method: 'POST',
     headers: {

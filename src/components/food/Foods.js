@@ -6,7 +6,8 @@ import {
   Button,
   Image,
   TouchableOpacity,
-  FlatList
+  FlatList,
+  RefreshControl
 } from 'react-native';
 import Food from './Food'
 import HeaderRight from '../header/HeaderRight'
@@ -14,6 +15,28 @@ import {connect} from 'react-redux'
 import * as actions from '../../actions'
 
 class Foods extends Component<{}> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      refreshing: false,
+      page: 1
+    };
+  }
+
+  onRefresh() {
+    const {foods} = this.props
+    const restaurantId = foods[0].restaurantId
+    this.setState({refreshing: true});
+    const newpage = this.state.page + 1
+    this.setState({page: newpage})
+    this.goMenu(restaurantId, newpage)
+    this.setState({refreshing: false});
+  }
+
+  goMenu(restaurantId, page) {
+    this.props.getMyMenu(restaurantId, page)
+  }
+
   static navigationOptions = ({navigation}) => {
     return {
     title: "Menu",
@@ -21,12 +44,13 @@ class Foods extends Component<{}> {
   }}
 
   render() {
-    const {foods} = this.props.navigation.state.params
+    const {foods} = this.props
     if(foods != null && foods.length == 0){
         return(
-        <View><Text>Loading...</Text></View>
+        <View><Text>There is no food</Text></View>
         )
     } else {
+      const restaurantId = foods[0].restaurantId
       return (
         <View style={styles.container}>
           <FlatList
@@ -35,6 +59,16 @@ class Foods extends Component<{}> {
               <Food food={item} key={item.id}/>
             )}
             keyExtractor={(item, index) => index.toString()}
+
+            refreshControl={
+               <RefreshControl
+                  refreshing={this.state.refreshing}
+                  onRefresh={this.onRefresh.bind(this)}
+                   title="Pull to refresh"
+                   tintColor="#fff"
+                   titleColor="#fff"
+                />
+            }
           />
         </View>
       );
@@ -45,6 +79,7 @@ class Foods extends Component<{}> {
 const mapStateToProps = (state) => {
   return {
   isLoading: state.api.isLoading,
+  foods: state.api.foods,
 }}
 export default connect(mapStateToProps, actions)(Foods)
 

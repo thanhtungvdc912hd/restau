@@ -9,7 +9,7 @@ import {
   Text,
   Button,
   Image,
-  TouchableOpacity,
+  StyleSheet,
 } from 'react-native';
 import Main from '../components/home/Main'
 import MyInfo from '../components/myinfo/MyInfo'
@@ -23,6 +23,7 @@ import HeaderRight from '../components/header/HeaderRight'
 import Orders from '../components/order/Orders'
 import SlideMenu from '../components/slideMenu/SlideMenu'
 import Authentication from '../components/authentication/Authentication'
+import Search from '../components/search/Search'
 
 
 const stackNavigatorConfiguration = {
@@ -31,6 +32,7 @@ const stackNavigatorConfiguration = {
     headerStyle: {
       backgroundColor: '#43a047',
     },
+    headerBackTitle: " ",
     headerTintColor: '#fff',
     headerTitleStyle: {
       fontWeight: 'bold',
@@ -38,6 +40,7 @@ const stackNavigatorConfiguration = {
     },
   }
 };
+
 export const HomePage = StackNavigator({
   Main: { screen: Main },
   Restaurant: { screen: Restaurant },
@@ -47,11 +50,12 @@ export const HomePage = StackNavigator({
   Food: { screen: Food },
   FoodDetail: { screen: FoodDetail },
   Orders: { screen: Orders },
+  Search: { screen: Search },
+  Info: { screen: MyInfo },
 },stackNavigatorConfiguration)
 
 export const AppNavigator = DrawerNavigator({
   Home: { screen: HomePage },
-  Info: { screen: MyInfo },
   Authentication: { screen: Authentication },
   //Language: { screen: MyInfo },
   //Info: { screen: MyInfo },
@@ -59,7 +63,7 @@ export const AppNavigator = DrawerNavigator({
 },{
   // define customComponent here
   contentComponent: SlideMenu,
-  headerMode: 'float'
+
 });
 
 
@@ -91,3 +95,30 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps)(AppWithNavigationState);
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#43a047',
+    flex: 1,
+    justifyContent: 'space-between'
+  },
+  headerText: {
+    paddingHorizontal: 10,
+  },
+  icon: {
+    width: 20,
+    height: 20,
+    justifyContent: 'center'
+  },
+  badge: {
+    position: 'absolute',
+    bottom: 10,
+    right: 1,
+    height: 20,
+    width: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'red'
+  }
+})

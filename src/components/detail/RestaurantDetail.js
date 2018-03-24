@@ -18,6 +18,11 @@ import * as actions from '../../actions'
 class RestaurantDetail extends Component<{}> {
   static navigationOptions = ({navigation}) => ({
     title: navigation.state.params.restaurant.name,
+    headerRight: <View style={{paddingRight: 10}}>
+                  <TouchableOpacity onPress={()=>{navigation.navigate('Search')}}>
+                    <Image source={require("../../images/search.png")} style={[styles.iconSearch,{tintColor: 'white'}]}/>
+                  </TouchableOpacity>
+                </View>,
   })
 
   state = {
@@ -38,6 +43,10 @@ class RestaurantDetail extends Component<{}> {
 
   goFoods(foods) {
     this.props.goFoods(foods, true)
+  }
+
+  goMenu(restaurantId) {
+    this.props.getMyMenu(restaurantId, 1)
   }
   render() {
     const {restaurant} = this.props.navigation.state.params
@@ -167,7 +176,7 @@ class RestaurantDetail extends Component<{}> {
             </View>
 
             <View style={styles.time}>
-              <TouchableOpacity style={{flex:1, flexDirection:'row'}} onPress = {() => {this.goFoods(foods)}}>
+              <TouchableOpacity style={{flex:1, flexDirection:'row'}} onPress = {() => {this.goMenu(restaurant.id)}}>
                 <Image source={require("../../images/menu.png")} style={styles.icon}/>
                 <Text style={styles.txtTime}>Menu</Text>
               </TouchableOpacity>
@@ -220,6 +229,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
 
+  },
+  iconSearch: {
+    width: 24,
+    height: 24,
   },
   openStatus: {
     width: 30,

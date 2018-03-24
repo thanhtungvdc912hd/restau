@@ -18,16 +18,19 @@ import * as actions from '../../actions'
 class Main extends Component<{}> {
   static navigationOptions = ({navigation}) => ({
     title: 'My Restaurant',
-    drawerLabel: 'Home',
-    drawerIcon: ({ tintColor }) => (
-      <Image
-        source={require('../../images/home_r.png')}
-        style={[styles.icon, {tintColor: tintColor}]}
-      />
-    ),
+    headerTitleStyle: {
+      fontFamily: 'Avenir',
+      fontWeight: 'bold',
+      fontSize: 17,
+    },
     headerLeft: <View style={{paddingLeft: 10}}>
                   <TouchableOpacity onPress={()=>{navigation.navigate('DrawerOpen')}}>
                     <Image source={require("../../images/menu2.png")} style={styles.icon}/>
+                  </TouchableOpacity>
+                </View>,
+    headerRight: <View style={{paddingRight: 10}}>
+                  <TouchableOpacity onPress={()=>{navigation.navigate('Search')}}>
+                    <Image source={require("../../images/search.png")} style={[styles.icon,{tintColor: 'white'}]}/>
                   </TouchableOpacity>
                 </View>,
   })
@@ -41,11 +44,15 @@ class Main extends Component<{}> {
 
     if (!this.props.isLogged) {
       this.props.checkLoginMyRestau()
+      setInterval(() => {
+        this.props.refreshMyToken()
+      }, 60 * 1000)
     }
   }
 
   render() {
-    const {restaurants, topPromotions, isLoading} = this.props
+    const {restaurants, topPromotions} = this.props
+
     if (topPromotions == null || restaurants == null) {
       return (
         <View style={{marginTop: 10}}>
@@ -67,7 +74,6 @@ class Main extends Component<{}> {
 
 const mapStateToProps = (state) => {
   return {
-  isLoading: state.api.isLoading,
   restaurants: state.api.restaurants,
   topPromotions: state.api.topPromotions,
   isLogged: state.auth.isLogged

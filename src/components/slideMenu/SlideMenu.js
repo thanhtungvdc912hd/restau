@@ -37,7 +37,7 @@ class SlideMenu extends Component<{}> {
             <Text style={styles.btnText}>Order History</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.btnStyleSignIn}
-            onPress={() => navigate('Info',{username: 'Tung'})}>
+            onPress={() => navigate('Info')}>
             <Text style={styles.btnText}>Your Info</Text>
           </TouchableOpacity>
           <TouchableOpacity

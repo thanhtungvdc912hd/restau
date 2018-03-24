@@ -18,7 +18,11 @@ import {INCREASE, DECREASE, HOME,BRANCHES, RESTAURANT_DETAIL,
   UPDATE_CART,
   DELETE_FROM_CART,
   LOGIN_OK,
+  LOGIN_KO,
   LOGOUT,
+  GO_MENU,
+  CHANGE_INFO,
+  SEARCH_RESTAU,
   GO_BACK,
 } from '../actions/type';
 // Start with two routes: The Main screen, with the Login screen on top.
@@ -122,7 +126,9 @@ const initialStateDatabase = {
   restaurants: null,
   topPromotions: null,
   myRestauBranch: null,
-  error: false
+  error: false,
+  foods: [],
+  searchResult: []
 }
 
 function api(state = initialStateDatabase, action) {
@@ -145,6 +151,17 @@ function api(state = initialStateDatabase, action) {
           isLoading: false,
           myRestauBranch: action.dataSource
         }
+    case GO_MENU:
+        const myFoods = action.page === 1 ? action.foods : action.foods.concat(state.foods)
+        return {
+          ...state,
+          foods: myFoods
+        }
+    case SEARCH_RESTAU:
+        return {
+          ...state,
+          searchResult: action.searchResult
+        }
     case FETCH_KO:
         return {
           ...state,
@@ -158,7 +175,8 @@ function api(state = initialStateDatabase, action) {
 const initialStateAuth = {
   user: null,
   token: null,
-  isLogged: false
+  isLogged: false,
+  error: null
 }
 
 function auth(state = initialStateAuth, action) {
@@ -170,12 +188,22 @@ function auth(state = initialStateAuth, action) {
           user: action.token ? action.token.user : null,
           token: action.token ? action.token.token : null
         }
+    case LOGIN_KO:
+        return {
+          ...state,
+          error: action.error
+        }
     case LOGOUT:
         return {
           ...state,
           user: null,
           token: null,
           isLogged: false,
+        }
+    case CHANGE_INFO:
+        return {
+          ...state,
+          user: action.user,
         }
     default:
       return state

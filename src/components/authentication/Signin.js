@@ -23,6 +23,7 @@ class Signin extends Component {
     this.props.loginMyRestau(email, password)
   }
   render() {
+    const {errorMsg} = this.props
     return (
         <View>
           <TextInput style={styles.input}
@@ -34,6 +35,9 @@ class Signin extends Component {
             onChangeText={password => this.setState({password})}
             secureTextEntry
             placeholder='Enter your password'/>
+          <View style={{alignItems: 'center', justifyContent: 'center'}}>
+          <Text style={{color: 'tomato'}}>{errorMsg}</Text>
+          </View>
           <TouchableOpacity
             onPress={this.onSignIn.bind(this)}
             style={styles.signInNow}>
@@ -47,6 +51,7 @@ class Signin extends Component {
 const mapStateToProps = (state) => {
   return {
   isLogged: state.auth.isLogged,
+  errorMsg: state.auth.error
 }}
 export default connect(mapStateToProps, actions)(Signin)
 

@@ -17,6 +17,7 @@ class Restaurant extends Component<{}> {
 
   goRestaurantDetail() {
     const myRestaurant = this.props.restaurants.find((element) => {return element.id === this.props.restaurant.id})
+
     if (myRestaurant != null) {
       this.props.goRestaurantDetail(myRestaurant)
     } else {
@@ -52,7 +53,7 @@ class Restaurant extends Component<{}> {
                   </View>
                   <View style={styles.restauInfoTool}>
                     <View>
-                      <TouchableOpacity onPress={()=>{navigation.navigate('RestaurantDetail',{restaurant})}}>
+                      <TouchableOpacity>
                         <Image source={require("../../images/info.png")} style={styles.icon}/>
                       </TouchableOpacity>
                     </View>
