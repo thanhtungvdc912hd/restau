@@ -5,35 +5,41 @@ import {
   Text,
   Button,
   Image,
-  TouchableOpacity,
+  FlatList,
   ScrollView
 } from 'react-native';
 import OrderHistory from './OrderHistory'
-export default class OrderHistories extends Component<{}> {
+import {connect} from 'react-redux'
+import * as actions from '../../actions'
+class OrderHistories extends Component<{}> {
   static navigationOptions = ({navigation}) => ({
     title: "Order History"
 
   })
-
+  componentDidMount() {
+    this.props.getMyOrderHistory()
+  }
   render() {
-    const {navigate} = this.props.navigation
-
+    const orderHistories = this.props.orderHistories ? this.props.orderHistories : []
     return (
       <View style={styles.container}>
-        <ScrollView>
-        <OrderHistory navigate={navigate}/>
-        <OrderHistory navigate={navigate}/>
-        <OrderHistory navigate={navigate}/>
-        <OrderHistory navigate={navigate}/>
-        <OrderHistory navigate={navigate}/>
-        <OrderHistory navigate={navigate}/>
-        <OrderHistory navigate={navigate}/>
-        </ScrollView>
+        <FlatList
+          data={orderHistories}
+          renderItem={({item}) => (
+            <OrderHistory orderHistory={item} key={item.id}/>
+          )}
+          keyExtractor={(item, index) => index.toString()}
+        />
       </View>
     );
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+  orderHistories: state.api.orderHistory
+}}
+export default connect(mapStateToProps, actions)(OrderHistories)
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#43a047',

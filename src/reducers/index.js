@@ -24,6 +24,7 @@ import {INCREASE, DECREASE, HOME,BRANCHES, RESTAURANT_DETAIL,
   CHANGE_INFO,
   SEARCH_RESTAU,
   GO_BACK,
+  ORDER_HISTORY,
 } from '../actions/type';
 // Start with two routes: The Main screen, with the Login screen on top.
 //const firstAction = AppNavigator.router.getActionForPathAndParams('MyMain');
@@ -128,7 +129,8 @@ const initialStateDatabase = {
   myRestauBranch: null,
   error: false,
   foods: [],
-  searchResult: []
+  searchResult: [],
+  orderHistory: []
 }
 
 function api(state = initialStateDatabase, action) {
@@ -156,6 +158,11 @@ function api(state = initialStateDatabase, action) {
         return {
           ...state,
           foods: myFoods
+        }
+    case ORDER_HISTORY:
+        return {
+          ...state,
+          orderHistory: action.orderHistory
         }
     case SEARCH_RESTAU:
         return {

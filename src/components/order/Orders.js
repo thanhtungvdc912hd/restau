@@ -26,6 +26,11 @@ class Orders extends Component<{}> {
       ),
   }}
 
+  sendOrder() {
+    const foods = this.props.cartFoods
+    const myFoods = foods.map(e => ({id: e.food.id, quantity: e.quantity}))
+    this.props.sendMyOrder(myFoods)
+  }
   render() {
     const foods = this.props.cartFoods
     const totalFoods = foods.map(e => e.food.price * e.quantity)
@@ -46,7 +51,7 @@ class Orders extends Component<{}> {
           </View>
 
           </View>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => {this.sendOrder()}}>
               <View style={{backgroundColor: '#a5d6a7', alignItems: 'center', justifyContent: 'center', height: 50}}>
                 <Text style={{color: '#fff'}}>PAY NOW</Text>
               </View>

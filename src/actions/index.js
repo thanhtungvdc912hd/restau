@@ -16,6 +16,7 @@ import {INCREASE, DECREASE, HOME, BRANCHES,
   CHANGE_INFO,
   GO_BACK,
   SEARCH_RESTAU,
+  ORDER_HISTORY,
 } from './type';
 import getRestaurantDetail from '../utils/getRestaurantDetail'
 import getRestaurants from '../utils/getRestaurants'
@@ -28,6 +29,8 @@ import refreshToken from '../utils/refreshToken'
 import changeInfo from '../utils/changeInfo'
 import getMenu from '../utils/getMenu'
 import searchRestaurant from '../utils/searchRestaurant'
+import getOrderHistory from '../utils/getOrderHistory'
+import sendOrder from '../utils/sendOrder'
 
 export const counterIncrease = () => ({type:INCREASE})
 export const counterDecrease = () => ({type:DECREASE})
@@ -73,6 +76,7 @@ export const fetchRestaurant = (dataSource) => ({type:FETCH_RESTAURANT, dataSour
 export const fetchKO = () => ({type:FETCH_KO})
 export const loginKO = (error) => ({type:LOGIN_KO, error})
 export const goBack = () => ({type:GO_BACK})
+export const myOrderHistory = (orderHistory) => ({type:ORDER_HISTORY, orderHistory})
 export const goSearchResult = (searchResult) => ({type:SEARCH_RESTAU, searchResult})
 export const saveCartThunk = (food, quantity) => {
   return dispatch => {
@@ -130,6 +134,15 @@ export const refreshMyToken = () => {
   }
 }
 
+export const sendMyOrder = (orderDetail) => {
+  return dispatch => {
+    getToken()
+    .then(res => sendOrder(res, orderDetail))
+    .then(result => console.log(result))
+    .catch(err => console.log(err))
+  }
+}
+
 export const changeMyInfo = (name, tel, address, birthday) => {
   return dispatch => {
     getToken()
@@ -138,6 +151,15 @@ export const changeMyInfo = (name, tel, address, birthday) => {
       dispatch(myChangeInfo(user))
       dispatch(goBack())
     })
+    .catch(err => console.log(err))
+  }
+}
+
+export const getMyOrderHistory = () => {
+  return dispatch => {
+    getToken()
+    .then(res => getOrderHistory(res))
+    .then(orderHistory => dispatch(myOrderHistory(orderHistory)))
     .catch(err => console.log(err))
   }
 }

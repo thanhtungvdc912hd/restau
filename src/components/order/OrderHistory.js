@@ -12,45 +12,37 @@ import {
 
 export default class OrderHistory extends Component<{}> {
   render() {
+    const {orderHistory} = this.props
+
     return (
         <View style={styles.restauContainer}>
           <View style={styles.restauStyle}>
             <View style={styles.restauInfo}>
               <View style={styles.restauInfoTool}>
                   <View style={{justifyContent: 'center'}}>
-                    <Text style={styles.txtRestauName}>BB' House Restaurant</Text>
-                  </View>
-                  <View style={styles.restauInfoTool}>
-                    <View>
-                      <TouchableOpacity onPress={()=>{this.props.navigate('RestaurantDetail')}}>
-                        <Image source={require("../../images/info.png")} style={styles.icon}/>
-                      </TouchableOpacity>
-                    </View>
-                    <View>
-                      <Image source={require("../../images/reserve.png")} style={styles.icon}/>
-                    </View>
+                    <Text style={styles.txtRestauName}>{orderHistory.name}</Text>
                   </View>
               </View>
 
-              <Text  style={styles.txtAddress}>376/42 Nguyen Dinh Chieu, Phuong 4, Quan 3, TP Ho Chi Minh</Text>
-              <View style={{flexDirection: 'row', justifyContent:'space-around'}}>
+              <Text  style={styles.txtAddress}>{orderHistory.address}</Text>
+              <View style={{flexDirection: 'row', justifyContent:'space-between'}}>
                 <View style={{flexDirection: 'row', justifyContent:'space-around'}}>
                   <Image source={require("../../images/time.png")} style={styles.icon}/>
                   <View style={{justifyContent: 'center', paddingLeft:5 }}>
-                    <Text style={{fontSize: 10}}>01-01-2018 15:30</Text>
+                    <Text style={{fontSize: 10}}>{orderHistory.orderDate}</Text>
                   </View>
                 </View>
                 <View style={{flexDirection: 'row', justifyContent:'space-around'}}>
                   <Image source={require("../../images/orderStatus.png")} style={styles.icon}/>
                   <View style={{justifyContent: 'center', paddingLeft:10 }}>
-                    <Text style={{fontSize: 10}}>Completed</Text>
+                    <Text style={{fontSize: 10}}>{orderHistory.status ? "Completed" : "Pending"}</Text>
                   </View>
                 </View>
 
                 <View style={{flexDirection: 'row', justifyContent:'space-around'}}>
                   <Image source={require("../../images/price.png")} style={styles.icon}/>
                   <View style={{justifyContent: 'center', paddingLeft:10 }}>
-                    <Text style={{fontSize: 10}}>9.000.000 VND</Text>
+                    <Text style={{fontSize: 10}}>{orderHistory.total} VND</Text>
                   </View>
                 </View>
               </View>
