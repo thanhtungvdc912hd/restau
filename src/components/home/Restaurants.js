@@ -14,6 +14,7 @@ export default class Restaurants extends Component {
   static navigationOptions = ({navigation}) => ({
     title: "Branches"
   })
+
   render() {
     const {restaurants, navigation} = this.props
     const dataSource = restaurants ? restaurants : navigation.state.params.restaurants

@@ -1,8 +1,6 @@
 const URL = 'http://192.168.64.2/myrestau/cart.php'
 
 function sendOrder(token, orderDetail) {
-  console.log(token);
-  console.log(orderDetail);
   return fetch(URL,{
     method: 'POST',
     headers: {

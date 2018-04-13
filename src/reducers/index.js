@@ -6,6 +6,8 @@ import getCart from '../utils/getCart'
 import saveToken from '../utils/saveToken'
 import getToken from '../utils/getToken'
 import checkLogin from '../utils/checkLogin'
+import languageConfig from '../config/languages/index'
+
 import {INCREASE, DECREASE, HOME,BRANCHES, RESTAURANT_DETAIL,
   FETCH_KO,
   FETCH_OK,
@@ -24,11 +26,19 @@ import {INCREASE, DECREASE, HOME,BRANCHES, RESTAURANT_DETAIL,
   CHANGE_INFO,
   SEARCH_RESTAU,
   GO_BACK,
+  GO_MAP,
+  GET_MAP,
   ORDER_HISTORY,
+  GALLERY,
+  IMAGE_COMMENT,
+  IMAGE_COMMENT_ADD,
+  ADD_COMMENT,
+  GET_COMMENT,
+  FETCH_COMMENT,
+  AUTHENTICATION,
+  SET_LANGUAGE
 } from '../actions/type';
-// Start with two routes: The Main screen, with the Login screen on top.
-//const firstAction = AppNavigator.router.getActionForPathAndParams('MyMain');
-//const tempNavState = AppNavigator.router.getStateForAction(firstAction);
+
 const initialRoute = 'MyMain';
 
 const initialState = AppNavigator.router.getStateForAction(
@@ -43,6 +53,12 @@ function nav(state = initialState, action) {
     case GO_BACK:
         nextState = AppNavigator.router.getStateForAction(
           NavigationActions.navigate({routeName: 'Main'}),
+          state
+        );
+        break;
+    case AUTHENTICATION:
+        nextState = AppNavigator.router.getStateForAction(
+          NavigationActions.navigate({routeName: 'Authentication'}),
           state
         );
         break;
@@ -64,6 +80,18 @@ function nav(state = initialState, action) {
           state
           );
         break;
+    case GO_MAP:
+        nextState = AppNavigator.router.getStateForAction(
+          NavigationActions.navigate({ routeName: 'MapInfo', params:{name: action.restaurantName}}),
+          state
+          );
+        break;
+    case GALLERY:
+        nextState = AppNavigator.router.getStateForAction(
+              NavigationActions.navigate({ routeName: 'Gallery', params:{imageId: action.imageId, images: action.images}}),
+              state
+              );
+            break;
     case BRANCHES:
         nextState = AppNavigator.router.getStateForAction(
           NavigationActions.navigate({ routeName: 'Restaurants', params:{restaurants: action.branches}}),
@@ -122,6 +150,35 @@ function cart(state = initialStateCart, action) {
   }
 }
 
+const initialStateComment = {
+  isLoading: false,
+  comments: [],
+};
+
+function comment(state = initialStateComment, action) {
+  switch (action.type) {
+    case FETCH_COMMENT:
+      return {
+        ...state,
+        isLoading: true,
+      }
+    case GET_COMMENT:
+      return {
+        ...state,
+        isLoading: false,
+        comments: action.comments
+      }
+    case ADD_COMMENT:
+      const myComments = state.comments.concat(action.comment)
+      return {
+        ...state,
+        comments: myComments
+      }
+    default:
+      return state
+  }
+}
+
 const initialStateDatabase = {
   isLoading: false,
   restaurants: null,
@@ -130,7 +187,8 @@ const initialStateDatabase = {
   error: false,
   foods: [],
   searchResult: [],
-  orderHistory: []
+  orderHistory: [],
+  comments: []
 }
 
 function api(state = initialStateDatabase, action) {
@@ -169,10 +227,43 @@ function api(state = initialStateDatabase, action) {
           ...state,
           searchResult: action.searchResult
         }
+    case IMAGE_COMMENT:
+        return {
+          ...state,
+          isLoading: false,
+          comments: action.comments
+        }
+    case IMAGE_COMMENT_ADD:
+        const myComments = action.comments.concat(state.comment)
+        return {
+          ...state,
+          isLoading: false,
+          comments: myComments
+        }
     case FETCH_KO:
         return {
           ...state,
           error: true
+        }
+    default:
+      return state
+  }
+}
+
+const initialStateMap = {
+  location: {
+    lat: 0,
+    lng:0
+  },
+  isReady: false
+}
+
+function map(state = initialStateMap, action) {
+  switch (action.type) {
+    case GET_MAP:
+        return  {
+          location: action.location,
+          isReady: true
         }
     default:
       return state
@@ -217,11 +308,29 @@ function auth(state = initialStateAuth, action) {
   }
 }
 
+const initialStateLanguage = {
+  language: languageConfig[1]
+}
+
+function language(state = initialStateMap, action) {
+  switch (action.type) {
+    case SET_LANGUAGE:
+        return  {
+          language: action.language
+        }
+    default:
+      return state
+  }
+}
+
 const AppReducer = combineReducers({
   nav,
   cart,
   api,
-  auth
+  auth,
+  map,
+  language,
+  comment
 });
 
 export default AppReducer;

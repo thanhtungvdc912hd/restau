@@ -25,10 +25,10 @@ class Restaurant extends Component<{}> {
 
   }
   render() {
-
     const {restaurant} = this.props
 
-    const url = `http://192.168.64.2/myrestau/images/restaurant/${restaurant.image}`
+    const url = `http://192.168.64.2/myrestau/images/restaurant/${restaurant.restaurantImage}`
+
     let mainOfficeJSX = null
     if (restaurant.id == restaurant.mainOfficeId) {
       mainOfficeJSX = (
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     backgroundColor: '#a5d6a7',
     borderTopWidth: 1,
-    borderTopColor: '#95a5a6',
+    borderTopColor: '#43a047',
   },
   restauStyle: {
     marginBottom: 10,

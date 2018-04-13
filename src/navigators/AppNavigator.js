@@ -20,6 +20,9 @@ import SlideMenu from '../components/slideMenu/SlideMenu'
 import Authentication from '../components/authentication/Authentication'
 import Search from '../components/search/Search'
 import OrderHistories from '../components/order/OrderHistories'
+import MapInfo from '../components/map/MapInfo'
+import Gallery from '../components/gallery/Gallery'
+
 
 
 const stackNavigatorConfiguration = {
@@ -49,6 +52,9 @@ export const HomePage = StackNavigator({
   Search: { screen: Search },
   Info: { screen: MyInfo },
   OrderHistories: { screen: OrderHistories },
+  MapInfo: { screen: MapInfo },
+  Gallery: { screen: Gallery },
+
 },stackNavigatorConfiguration)
 
 export const AppNavigator = DrawerNavigator({

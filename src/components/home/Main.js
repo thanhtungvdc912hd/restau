@@ -52,7 +52,6 @@ class Main extends Component<{}> {
 
   render() {
     const {restaurants, topPromotions} = this.props
-
     if (topPromotions == null || restaurants == null) {
       return (
         <View style={{marginTop: 10}}>

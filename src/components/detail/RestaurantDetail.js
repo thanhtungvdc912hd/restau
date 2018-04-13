@@ -8,13 +8,16 @@ import {
   TouchableOpacity,
   Modal,
   TouchableWithoutFeedback,
-  ScrollView
+  ScrollView,
+  FlatList,
+  Dimensions
 } from 'react-native';
 import moment from 'moment'
 import BenefitImage from '../benefit/BenefitImage'
+import FoodGallery from '../gallery/FoodGallery'
 import {connect} from 'react-redux'
 import * as actions from '../../actions'
-
+import Carousel from 'react-native-snap-carousel'
 class RestaurantDetail extends Component<{}> {
   static navigationOptions = ({navigation}) => ({
     title: navigation.state.params.restaurant.name,
@@ -29,6 +32,7 @@ class RestaurantDetail extends Component<{}> {
     modalVisible: false,
   };
 
+
   openModal() {
     this.setState({modalVisible:true});
   }
@@ -41,18 +45,18 @@ class RestaurantDetail extends Component<{}> {
     this.props.goBranches(this.props.navigation.state.params.restaurant.branches)
   }
 
-  goFoods(foods) {
-    this.props.goFoods(foods, true)
-  }
-
   goMenu(restaurantId) {
     this.props.getMyMenu(restaurantId, 1)
   }
+
+  renderHeader = () => {
+     return <Text style={styles.name}>Popular Photos</Text>
+  }
   render() {
     const {restaurant} = this.props.navigation.state.params
-    const {branches, benefits, promotions, foods} = restaurant
-
-    const url = `http://192.168.64.2/myrestau/images/restaurant/${restaurant.image}`
+    const {branches, benefits, promotions, foods, images} = restaurant
+    const url = `http://192.168.64.2/myrestau/images/restaurant/${restaurant.restaurantImage}`
+    const url2 = `http://static.ieltsplanet.info/wp-content/uploads/2017/05/greasy-fast-food.jpg`
     const urlBenefit = `http://192.168.64.2/myrestau/images/icons/`
 
     let branchesJSX = null
@@ -126,23 +130,24 @@ class RestaurantDetail extends Component<{}> {
         <Image source={require("../../images/closed.png")} style={styles.openStatus}/>
       )
     }
-
-
     return (
       <View style={styles.container}>
+      <ScrollView>
         {modalJSX}
         <View style={styles.restauImage}>
           <Image source={{uri: url}} style={styles.image}/>
         </View>
-        <View style={styles.detail}>
-          <View>
+        <View style={styles.detailAll}>
+
+          <View style={styles.detail}>
             <View style={styles.nameInfo}>
               <Text style={styles.name}>{restaurant.name}</Text>
-              <View style={styles.time}>
-                <Image source={require("../../images/address.png")} style={styles.icon}/>
-                <Text style={styles.txtTime}>{restaurant.address}</Text>
-              </View>
-
+              <TouchableOpacity onPress={() => this.props.getMyMap(restaurant)}>
+                <View style={styles.time}>
+                  <Image source={require("../../images/address.png")} style={styles.icon}/>
+                  <Text style={styles.txtTime}>{restaurant.address}</Text>
+                </View>
+              </TouchableOpacity>
             </View>
             {branchesJSX}
             <View style={styles.time}>
@@ -175,15 +180,27 @@ class RestaurantDetail extends Component<{}> {
                 {benefitJSX}
             </View>
 
-            <View style={styles.time}>
+            <View style={styles.time, styles.nameInfo}>
               <TouchableOpacity style={{flex:1, flexDirection:'row'}} onPress = {() => {this.goMenu(restaurant.id)}}>
                 <Image source={require("../../images/menu.png")} style={styles.icon}/>
                 <Text style={styles.txtTime}>Menu</Text>
               </TouchableOpacity>
             </View>
-          </View>
         </View>
-
+        <View>
+          <FlatList
+            ListHeaderComponent={images.length > 0 ? this.renderHeader : null}
+            data={images}
+            renderItem={({item}) => (
+              <FoodGallery foodImage={item} images={images} key={item.id}/>
+            )}
+            keyExtractor={(item, index) => index.toString()}
+            numColumns={3}
+            contentContainerStyle={{justifyContent:'center', alignItems:'center', flex:1}}
+          />
+        </View>
+        </View>
+      </ScrollView>
       </View>
     );
   }
@@ -194,7 +211,8 @@ const mapStateToProps = (state) => {
   return {
   isLoading: state.api.isLoading,
   restaurants: state.api.restaurants,
-  topPromotions: state.api.topPromotions
+  topPromotions: state.api.topPromotions,
+  language: state.language.language
 }}
 export default connect(mapStateToProps, actions)(RestaurantDetail)
 
@@ -203,15 +221,13 @@ const restauHeight= restauWidth * 640 /960
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#43a047',
-    flex: 1,
-    justifyContent: 'space-between'
+    flex:1
   },
   headerText: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 10
-
   },
   headerTitle: {
     color: '#fff',
@@ -248,12 +264,15 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   detail: {
-    flex:2,
     paddingLeft: 10,
+  },
+  detailAll: {
+    flex: 1,
     backgroundColor: '#fff',
     shadowColor: '#2E272B',
     shadowOpacity: 1,
     margin:5,
+    justifyContent: 'space-between'
   },
   time: {
     flexDirection: "row",
@@ -288,7 +307,7 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     paddingTop: 5,
     borderBottomWidth: 1,
-    borderBottomColor: '#95a5a6',
+    borderBottomColor: '#43a047',
   },
   modalContainer: {
     flex: 1,
@@ -302,5 +321,5 @@ const styles = StyleSheet.create({
     marginTop: 150,
     justifyContent: 'center',
     backgroundColor: '#fff',
-  },
+  }
 })
