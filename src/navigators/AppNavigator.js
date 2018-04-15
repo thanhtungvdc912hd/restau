@@ -22,6 +22,7 @@ import Search from '../components/search/Search'
 import OrderHistories from '../components/order/OrderHistories'
 import MapInfo from '../components/map/MapInfo'
 import Gallery from '../components/gallery/Gallery'
+import CommentBox from '../components/gallery/CommentBox'
 
 
 
@@ -54,6 +55,7 @@ export const HomePage = StackNavigator({
   OrderHistories: { screen: OrderHistories },
   MapInfo: { screen: MapInfo },
   Gallery: { screen: Gallery },
+  CommentBox: { screen: CommentBox },
 
 },stackNavigatorConfiguration)
 

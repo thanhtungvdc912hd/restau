@@ -8,42 +8,51 @@ import {
   TouchableOpacity,
   Dimensions,
   ScrollView,
-  Modal
+  Modal,
+  Animated
 } from 'react-native';
 import {connect} from 'react-redux'
 import * as actions from '../../actions'
 
+var deviceWidth = Dimensions.get('window').width
+
 class ImageComment extends Component<{}> {
   state = {
-    modalVisible : false
+    modalVisible : false,
+    heightValue : new Animated.Value(-100),
+    commentId : null
   }
 
-  constructor () {
-    super()
-    this.springValue = new Animated.Value(0.3)
-  }
-
-  spring () {
-    this.springValue.setValue(0.3)
-    Animated.spring(
-      this.springValue,
-      {
-        toValue: 1,
-        friction: 1
-      }
-    ).start()
-  }
-  
-  openModal() {
-    this.setState({modalVisible:true});
+  openModal(userId, commentId) {
+    if (this.props.user.id === userId) {
+      this.setState({modalVisible:true});
+      Animated.timing(this.state.heightValue, {
+          duration: 300,
+          toValue: 200
+       }).start(() => {this.setState({commentId})})
+    }
   }
 
   closeModal() {
-    this.setState({modalVisible:false});
+    Animated.timing(this.state.heightValue, {
+        duration: 300,
+        toValue: -100
+     }).start(() => {this.setState({ modalVisible: false })})
   }
 
   getCommentFromImage(imageId) {
     this.props.getImageComment(imageId)
+  }
+
+  deleteMyComment() {
+    if (this.state.commentId !== null) {
+      this.props.deleteMyComment(this.state.commentId)
+    }
+  }
+
+  goMyCommentBox() {
+    this.props.goMyCommentBox(this.state.commentId)
+    this.closeModal()
   }
   render() {
     const {images, comments} = this.props
@@ -61,8 +70,7 @@ class ImageComment extends Component<{}> {
                     borderBottomRightRadius: 10,
                     marginTop: 5
                     }}>
-                <TouchableOpacity onPress={() => this.openModal()}>
-
+                <TouchableOpacity onPress={() => {this.openModal(item.userId, item.id)}}>
                   <View style={{flexDirection: 'row',borderBottomWidth: 1,borderBottomColor: '#43a047', padding: 5}}>
                     <View>
                       <Image source={{uri: url + item.userImage}} style={styles.icon}/>
@@ -99,29 +107,28 @@ class ImageComment extends Component<{}> {
                     activeOpacity={1}
                     onPress={() => {this.closeModal()}}
                   >
-                    <View style={styles.innerContainer}>
-                      <TouchableOpacity
-                        onPress={() => {this.closeModal()}}
+                    <Animated.View style={[styles.innerContainer,{height: this.state.heightValue}]}>
+                      <TouchableOpacity onPress={() => {this.goMyCommentBox()}}
+                      style={{alignItems: 'center', justifyContent: 'center',
+                        borderBottomWidth: 1,
+                        borderBottomColor: '#43a047',
+                        width: deviceWidth,
+                      height: 50}}
                       >
-                      <Text>Close</Text>
+                        <Text style={[styles.txtTitle,{color: '#43a047'}]}>EDIT</Text>
                       </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => {this.closeModal()}}
-                      >
-                      <Text>Close</Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => {this.closeModal()}}
-                      >
-                      <Text>Close</Text>
-                      </TouchableOpacity>
-                    </View>
+                      <TouchableOpacity onPress={() => {this.deleteMyComment()}}
+                        style={{alignItems: 'center', justifyContent: 'center',
+                          width: deviceWidth,
+                        height: 50}}>
 
+                        <Text style={[styles.txtTitle,{color: 'tomato'}]}>DELETE</Text>
+                      </TouchableOpacity>
 
+                      <View>
+                      </View>
+                    </Animated.View>
                   </TouchableOpacity>
-
-
-
               </Modal>
            </View>
       </View>
@@ -132,7 +139,8 @@ class ImageComment extends Component<{}> {
 const mapStateToProps = (state) => {
   return {
   isLoading: state.comment.isLoading,
-  comments: state.comment.comments
+  comments: state.comment.comments,
+  user: state.auth.user
 }}
 export default connect(mapStateToProps, actions)(ImageComment);
 
@@ -176,11 +184,16 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
    flex: 1,
-   justifyContent: 'center',
-   backgroundColor: 'rgba(0, 0, 0, 0.6)',
+   backgroundColor: 'rgba(0, 0, 0, 0.1)',
+   alignItems: 'center'
   },
   innerContainer: {
-    justifyContent: 'center',
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    alignItems: 'center',
     backgroundColor: '#fff',
-  }
+    width: deviceWidth - 10,
+    position: 'absolute',
+    bottom:-100,
+  },
 })

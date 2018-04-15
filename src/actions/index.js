@@ -16,6 +16,7 @@ import {INCREASE, DECREASE, HOME, BRANCHES,
   CHANGE_INFO,
   GO_BACK,
   GO_MAP,
+  GO_COMMENT,
   GET_MAP,
   SEARCH_RESTAU,
   ORDER_HISTORY,
@@ -25,6 +26,8 @@ import {INCREASE, DECREASE, HOME, BRANCHES,
   ADD_COMMENT,
   GET_COMMENT,
   FETCH_COMMENT,
+  DELETE_COMMENT,
+  UPDATE_COMMENT,
   AUTHENTICATION
 } from './type';
 import {AsyncStorage} from 'react-native'
@@ -44,6 +47,7 @@ import sendOrder from '../utils/sendOrder'
 import getMap from '../utils/getMap'
 import getComment from '../utils/getComment'
 import saveImageComment from '../utils/saveImageComment'
+import deleteComment from '../utils/deleteComment'
 import moment from 'moment';
 
 
@@ -179,15 +183,40 @@ export const getImageComment = (imageId) => {
   }
 }
 
-export const saveMyImageComment = (imageId, userName, userImage, description) => {
+export const deleteMyComment = (commentId) => {
+  return dispatch => {
+    dispatch(fetchComment())
+    deleteComment(commentId)
+    .then(result => {
+      if (result === 'THANH_CONG') {
+        dispatch({type:DELETE_COMMENT, commentId})
+      }
+    })
+    .catch(err => console.log(err))
+  }
+}
+
+export const editMyComment = (commentId) => {
+  return dispatch => {
+    dispatch({type:UPDATE_COMMENT, commentId})
+  }
+}
+
+export const goMyCommentBox = (commentId) => {
+  return dispatch => {
+    dispatch({type:GO_COMMENT, commentId})
+  }
+}
+
+export const saveMyImageComment = (imageId, userId, userName, userImage, description) => {
   return dispatch => {
     getToken()
     .then(token => {
       const date = moment(new Date()).format("YYYY-MM-DD hh:mm:ss")
         saveImageComment(token, imageId, description, date)
         .then(res => {
-          if (res === 'THANH_CONG') {
-            dispatch(addComment({description: description, userName: userName, userImage: userImage, rate: 5, commentDate: date}))
+          if (res !== 'KHONG_THANH_CONG') {
+            dispatch(addComment({id: res, userId: userId, description: description, userName: userName, userImage: userImage, rate: 5, commentDate: date}))
           }
         })
 

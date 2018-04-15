@@ -34,11 +34,14 @@ class Gallery extends Component<{}> {
     this.keyboardHeight = new Animated.Value(0);
   }
 
-
+  componentWillReceiveProps(nextProps){
+    this.setState({yourComment: nextProps.selectedComment ? nextProps.selectedComment.description : ""})
+  }
 
   componentWillMount () {
     this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow);
     this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide);
+
   }
 
   componentWillUnmount() {
@@ -86,11 +89,14 @@ class Gallery extends Component<{}> {
 
   saveCommentForImage(imageId) {
     const {user} = this.props
-    this.state.yourComment ? this.props.saveMyImageComment(imageId, user.name, user.image,this.state.yourComment) : ''
+    this.state.yourComment ? this.props.saveMyImageComment(imageId, user.id, user.name, user.image,this.state.yourComment) : ''
     Keyboard.dismiss()
     this.setState({yourComment: ""})
   }
 
+  goMyCommentBox() {
+    this.props.goMyCommentBox(null)
+  }
 
   render() {
     const {imageId, images} = this.props.navigation.state.params
@@ -152,7 +158,7 @@ class Gallery extends Component<{}> {
             </TextInput>
 
             <View style={{justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff'}}>
-              <TouchableOpacity onPress={() => this.saveCommentForImage(this.state.imageIndex)}>
+              <TouchableOpacity onPress={() => this.goMyCommentBox()}>
                 <Text style={styles.txtTitle}>Post</Text>
               </TouchableOpacity>
             </View>
@@ -166,7 +172,8 @@ const mapStateToProps = (state) => {
   return {
   isLoading: state.comment.isLoading,
   comments: state.comment.comments,
-  user: state.auth.user
+  user: state.auth.user,
+  selectedComment: state.comment.selectedComment
 }}
 export default connect(mapStateToProps, actions)(Gallery);
 

@@ -27,6 +27,7 @@ import {INCREASE, DECREASE, HOME,BRANCHES, RESTAURANT_DETAIL,
   SEARCH_RESTAU,
   GO_BACK,
   GO_MAP,
+  GO_COMMENT,
   GET_MAP,
   ORDER_HISTORY,
   GALLERY,
@@ -35,6 +36,8 @@ import {INCREASE, DECREASE, HOME,BRANCHES, RESTAURANT_DETAIL,
   ADD_COMMENT,
   GET_COMMENT,
   FETCH_COMMENT,
+  DELETE_COMMENT,
+  UPDATE_COMMENT,
   AUTHENTICATION,
   SET_LANGUAGE
 } from '../actions/type';
@@ -53,6 +56,12 @@ function nav(state = initialState, action) {
     case GO_BACK:
         nextState = AppNavigator.router.getStateForAction(
           NavigationActions.navigate({routeName: 'Main'}),
+          state
+        );
+        break;
+    case GO_COMMENT:
+        nextState = AppNavigator.router.getStateForAction(
+          NavigationActions.navigate({routeName: 'CommentBox'}),
           state
         );
         break;
@@ -153,6 +162,7 @@ function cart(state = initialStateCart, action) {
 const initialStateComment = {
   isLoading: false,
   comments: [],
+  selectedComment: null
 };
 
 function comment(state = initialStateComment, action) {
@@ -173,6 +183,19 @@ function comment(state = initialStateComment, action) {
       return {
         ...state,
         comments: myComments
+      }
+    case UPDATE_COMMENT:
+      const found = state.comments.find(item => item.id === action.commentId)
+      return {
+        ...state,
+        isLoading: false,
+        selectedComment: found
+      }
+    case DELETE_COMMENT:
+      return {
+        ...state,
+        isLoading: false,
+        comments: state.comments.filter(item => item.id !== action.commentId)
       }
     default:
       return state
